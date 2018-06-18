@@ -34,7 +34,7 @@ ScraperWiki.save_sqlite(["day"], {
   "day" => todaydate,
   "today_forecast" => todaycast,
   "tomorrow" => tomozdate,
-  "tomorrow_forecast" => tomozdate
+  "tomorrow_forecast" => tomozcast
 })
 
 # An arbitrary query against the database
