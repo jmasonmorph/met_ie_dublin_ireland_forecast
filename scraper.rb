@@ -3,11 +3,13 @@
 
 require 'scraperwiki'
 require 'mechanize'
+require 'time'
 
 agent = Mechanize.new
 
 # Read in a page
 page = agent.get("https://www.met.ie/forecasts/dublin")
+
 
 # Find somehing on the page using css selectors
 text = page.at('div.forecast').text.strip
@@ -17,6 +19,12 @@ text = page.at('div.forecast').text.strip
 text.gsub!(/[ \t]+/, ' ')
 text.gsub!(/ *\n */, "\n")
 #print text
+
+if (text =~ /Issued at: (\d.*\d)\n/is)
+  issued_at = Time.parse($1).utc.iso8601        # TODO: this isn't really in UTC but it will do
+else
+  issued_at = Time.now.utc.iso8601
+end
 
 text =~ /\nTODAY - (.+)\n(.*?)\n\n/is
 todaydate = $1
@@ -34,7 +42,8 @@ ScraperWiki.save_sqlite(["day"], {
   "day" => todaydate,
   "today_forecast" => todaycast,
   "tomorrow" => tomozdate,
-  "tomorrow_forecast" => tomozcast
+  "tomorrow_forecast" => tomozcast,
+  "issued_at" => issued_at
 })
 
 # An arbitrary query against the database
