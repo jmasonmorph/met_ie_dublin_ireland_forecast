@@ -10,7 +10,7 @@ db = SQLite3::Database.new "data.sqlite"
 db.execute( "select
            day,today_forecast
            from data
-           order by issued_at limit 1"
+           order by issued_at desc limit 1"
 ) do |row|
 
   day = row[0]
