@@ -26,7 +26,7 @@ else
   issued_at = Time.now.utc.iso8601
 end
 
-text =~ /\nTODAY - (.+)\n(.*?)\n\n/is
+text =~ /\n(?:TODAY|TONIGHT) - (.+)\n(.*?)\n\n/is
 todaydate = $1
 todaycast = $2
 print "TODAY [#{todaydate}] [#{todaycast}]\n"
